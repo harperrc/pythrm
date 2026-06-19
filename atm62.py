@@ -1,6 +1,5 @@
 import math
 import numpy as np
-import sys
 
 class atm62:
 
@@ -9,12 +8,9 @@ class atm62:
 #  method returnConditions(h)
 
 #  inputs:
-#    h        height (cm)
+#    h        height (Km)
 
-#  output:
-#    rho      density (Kg/m**3)
-    
-#  other possible outputs:
+#  outputs:
 #    temp     temperature (deg K)
 #    press    pressure (Pa (pascal))
 #    rho      density (Kg/m**3)
@@ -96,9 +92,12 @@ class atm62:
                          1194.0,1194.0,1194.0,1195.0,1195.0,1195.0,1195.0,1195.0,\
                          1195.0,1195.0,1195.0,1196.0])
 
-   def returnConditions(self,hcm):
+#  fmp = visc / pres * sqrt(pi * Rspecific * T / 2)
+#  Rspecific = 287 J/(kg K)
 
-      h = hcm / 1.0e5
+      self.fmp_con = math.sqrt(math.pi * 287.0 / 2.0)
+
+   def returnConditions(self,h):
 
       if (h <= 120.0):
          arg  = (h / 2.0) + 1.0
@@ -133,14 +132,17 @@ class atm62:
    
       rho   = rho * 1000.0
       sos   = 18.3194913 * np.sqrt(temp)
-      press = 287.003063 * rho * temp
+      pres  = 287.003063 * rho * temp
+
       visc  = 1.458e-6 * temp**1.5 / (temp + 110.4)
+
       visck = visc / rho
-      fmp   = 7.5474678196e-8 / rho
+
+# https://en.wikipedia.org/wiki/Mean_free_path
+
+      fmp   = self.fmp_con * visc / pres * math.sqrt(temp)
+
       g     = 9.08665 * (6378.137 / (6378.137 + h))**2
 
-#      return (temp,press,rho,sos,visc,visck,fmp,g,hs)
+      return (temp,pres,rho,sos,visc,visck,fmp,g,hs)
 
-      rho = rho / 1000.0
-
-      return (rho)

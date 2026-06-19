@@ -5,27 +5,40 @@ import numpy as np
 import sys
 from thermal import *
 
-whichrun = 2
+whichrun = 0
 
 if (whichrun == 0):
-   yld  =   10.0
-   hob  =    0.0
-   
    yld  =  20000.0
    hob  =      0.0
+
+   yld  = 2000.0
+   hob  =  100.0
+
+   yld  =   1000.0
+   hob  =  10000.0
    
    gnd  =    0.0
    hdet =    0.0
    
-   rdet = 10000.0
+   rdet = 1000.0
    
    th = THERMAL(yld,hob,gnd,True)
+
+#   attrs = vars(th)
+#   for item in attrs.items():
+#      if ('__' not in item[0]):
+#         print(item)
+#   for (i,a) in enumerate(th.pwr):
+#      print(i,a)
    
-   #  get the suggested time array
+#  get the suggested time array
    
    ta = th.ta
    
    fo = open('out.thermal','w')
+   hdr = '#'+' ' * 5+'time_sec'+' ' * 10+'th'+' ' * 12+'thflux' \
+         +' ' * 9+'integ_flux'+' ' * 7+'rfb_cm'+' ' * 12+'hfb_cm'
+   fo.write('%s\n' % (hdr))
    
    for t in ta:
       (a,b,c) = th.atATime(hdet,rdet,t)
@@ -51,6 +64,9 @@ if (whichrun == 1):
 
             oname = '%d_%d_%.2f.out' % (yld,hob,rdetkm)
             fo = open(oname,'w')
+            hdr = '#'+' ' * 5+'time_sec'+' ' * 10+'th'+' ' * 12+'thflux' \
+                  +' ' * 9+'integ_flux'+' ' * 7+'rfb_cm'+' ' * 12+'hfb_cm'
+            fo.write('%s\n' % (hdr))
        
             for t in ta:
                (a,b,c) = th.atATime(hdet,rdet,t)

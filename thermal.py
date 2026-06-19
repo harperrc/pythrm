@@ -1,6 +1,6 @@
 import numpy as np
-from CRUDEFB import *
 from atm62 import *
+from FIREBALL import *
 
 class THERMAL:
    def __init__(self,yld,hob,gnd,dump=False):
@@ -14,19 +14,21 @@ class THERMAL:
 
       self.atmos = atm62()
 
-      self.fb    = CRUDEFB(yld,hob)
+      self.fb    = FIREBALL(yld,hob*0.001)
 
       self.w     = yld
 
       self.hob   = hob
       self.hobcm = hob * 100.0
+      self.hobkm = hob * 0.001
 
       self.gnd   = gnd
       self.gndcm = gnd * 100.0
+      self.gndkm = gnd * 0.001
 
-      self.rzero = self.atmos.returnConditions(self.gndcm)
+      (temp,pres,self.rzero,sos,visc,visck,fmp,g,hs) = self.atmos.returnConditions(self.gndkm)
 
-      self.rho   = self.atmos.returnConditions(self.hobcm)
+      (temp,pres,self.rho,sos,visc,visck,fmp,g,hs)   = self.atmos.returnConditions(self.hobkm)
 
 #  height to apply correction to thermal output (cm)
 
@@ -85,6 +87,8 @@ class THERMAL:
       
       tmax    = 0.03800 * self.w**0.44 * sigma**0.36
       tmin    = 0.00256 * self.w**0.39 * sigma**(-0.062)
+
+      self.tmax = tmax
    
       chk     = 0.99 * tmax
       if (tmin > chk):
@@ -181,7 +185,8 @@ class THERMAL:
 
 #  get fireball at current time
 
-      (rfb,rise) = self.fb.radiusHfb(t)
+      (dfb,rise) = self.fb.FD(t)
+      rfb = 0.50 * dfb
 
 #  warn user if inside fireball
 
@@ -226,7 +231,7 @@ class THERMAL:
 
 #  get density at current fireball height
 
-      den  = self.atmos.returnConditions(hfb)
+      (temp,pres,den,sos,visc,visck,fmp,g,hs)   = self.atmos.returnConditions(hfb * 0.001)
 
 #  correction due to ground
 
