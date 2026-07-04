@@ -142,7 +142,7 @@ class atm62:
 
       fmp   = self.fmp_con * visc / pres * math.sqrt(temp)
 
-      g     = 9.08665 * (6378.137 / (6378.137 + h))**2
+      g     = 9.80665 * (6378.137 / (6378.137 + h))**2
 
       return (temp,pres,rho,sos,visc,visck,fmp,g,hs)
 
