@@ -131,7 +131,7 @@ class atm62:
 #  simple conversion to compute speed of sound
    
       rho   = rho * 1000.0
-      sos   = 18.3194913 * np.sqrt(temp)
+      sos   = 20.0462491 * np.sqrt(temp)
       pres  = 287.003063 * rho * temp
 
       visc  = 1.458e-6 * temp**1.5 / (temp + 110.4)
