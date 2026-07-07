@@ -19,9 +19,6 @@ class FIREBALL:
 
       self.atm = atm62()
 
-#  fits to Figure 9 compute DFB in ?? i think the plot is mislabeled
-#  it appears the y axis is meters vs cm (compares favorabily with other data)
-
       self.p0 = [  1.0000000E+04,  1.2651851E-01, -6.3315969E-03]
       self.p1 = [  4.2439795E+04,  3.1559732E-01, -6.5007706E-03]
       self.p2 = [  3.6159920E+04,  1.8173914E-01, -3.4663785E-02]
@@ -37,6 +34,7 @@ class FIREBALL:
 #  0.3504 smaller
 
       self.con   = W**0.35 * (self.rho0 / self.rhob)**0.18
+      self.con   = 0.01 * self.con
 
 #  computed average over 1 second intervals over yields and height of burst
 #  now get the average growth rate of the fireball
