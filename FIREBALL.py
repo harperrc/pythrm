@@ -28,7 +28,6 @@ class FIREBALL:
 
       (temp,pres,self.rho0,sos,visc,visck,fmp,g,hs) = self.atm.returnConditions(0.0)
       (temp,pres,self.rhob,sos,visc,visck,fmp,g,hs) = self.atm.returnConditions(HOB)
-      print(self.rho0,self.rhob)
 
       self.t2max = 0.037 * (self.rhob / self.rho0)**0.282 * W**0.47
 
@@ -65,8 +64,6 @@ class FIREBALL:
       tmp   = self.p0[0] * math.exp(self.p0[1] * math.log(tstar) + self.p0[2] * math.log(tstar)**2)
 
       self.minDFB = tmp * self.con
-      print('minDFB %15.5f' % (self.minDFB))
-      self.dfbCm  = 0.0
 
    def FD(self,T):
       tx    = max(0.0,min(T,20.0 * self.t2max))
